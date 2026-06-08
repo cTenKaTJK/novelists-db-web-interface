@@ -1,0 +1,14 @@
+node_modules/
+front/node_modules/
+
+back/venv/
+__pycache__/
+*.pyc
+
+dist/
+.vite/
+.vscode/
+.idea/
+
+*.log
+.env
