@@ -15,9 +15,16 @@
     <div class="form-group">
       <input type="number" v-model="local.год_смерти" placeholder="Год смерти" />
     </div>
+
     <div class="form-group">
-      <input type="number" v-model="local.id_страны_рождения" placeholder="ID страны" />
+      <select v-model="local.id_страны_рождения">
+        <option value="">-- Выберите страну --</option>
+        <option v-for="c in props.countries" :key="c.id_страны" :value="c.id_страны">
+          {{ c.название_страны }}
+        </option>
+      </select>
     </div>
+
     <button type="submit" class="btn">{{ isEdit ? 'Обновить' : 'Добавить' }}</button>
   </form>
 </template>
@@ -26,7 +33,11 @@
 import { reactive, watch } from 'vue'
 import type { Writer } from '@/types'
 
-const props = defineProps<{ initial?: Writer | null }>()
+const props = defineProps<{
+  initial?: Writer | null
+  countries: { id_страны: number; название_страны: string }[]
+}>()
+
 const emit = defineEmits<{ (e: 'submit', data: Omit<Writer, 'id_писателя'>): void }>()
 
 const local = reactive({
@@ -49,7 +60,13 @@ watch(() => props.initial, (newVal) => {
     local.год_смерти = newVal.год_смерти?.toString() || ''
     local.id_страны_рождения = newVal.id_страны_рождения?.toString() || ''
   } else {
-    Object.assign(local, { фамилия: '', имя: '', отчество: '', год_рождения: '', год_смерти: '', id_страны_рождения: '' })
+    // Очистка при создании нового
+    local.фамилия = ''
+    local.имя = ''
+    local.отчество = ''
+    local.год_рождения = ''
+    local.год_смерти = ''
+    local.id_страны_рождения = ''
   }
 }, { immediate: true })
 
