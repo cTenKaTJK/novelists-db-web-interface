@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="page-title">База Для Книжных Червей</h1>
+    <h1 class="page-title">База книг</h1>
 
     <div class="tabs">
       <button
@@ -20,7 +20,7 @@
       <div v-if="activeTab === 'writers'" class="tab-pane">
         <div class="card">
           <div class="card-title">Добавить / редактировать писателя</div>
-          <WriterForm :initial="editingWriter" @submit="saveWriter" />
+          <WriterForm :initial="editingWriter" :countries="countries" @submit="saveWriter" />
           <hr />
           <WriterList :writers="writers" :loading="loadingWriters" @edit="editWriter" @delete="handleDeleteWriter" />
         </div>
@@ -128,7 +128,9 @@ async function loadWorksForSelect() {
 async function loadCountries() {
   try {
     countries.value = await getCountries()
-  } catch (err) { console.error(err) }
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 function onEditionAdded() {
